@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "abstract_client")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,11 +20,15 @@ public class AbstractClient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+    @Column(name = "abstract_name")
     private String name;
+    @Column(name = "abstract_surname")
     private String surname;
+    @Column(name = "indicator")
     private boolean indicator; // true: freelancer false: buyer
     @OneToMany
-    @JoinColumn(columnDefinition = "abstractId")
+    @JoinColumn(name = "abstractId")
     private List<AbstractOrder> ordersId = new ArrayList<>();
 }
