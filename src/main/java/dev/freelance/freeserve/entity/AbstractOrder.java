@@ -24,4 +24,7 @@ public class AbstractOrder {
     private String abstractDescription;
     @OneToMany
     private List<Milestone> milestones = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(columnDefinition = "id")
+    private AbstractClient clientId;
 }

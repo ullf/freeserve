@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Milestone implements MilestoneInterface {
+public class Milestone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,15 +22,5 @@ public class Milestone implements MilestoneInterface {
     private String milestoneDescription;
     @ManyToOne
     private AbstractOrder orderId;
-
-    @Override
-    public int createMilestone() {
-        return 0;
-    }
-
-    @Override
-    public int completeMilestone() {
-        return 1;
-    }
 }
 

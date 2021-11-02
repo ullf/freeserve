@@ -3,8 +3,6 @@ package dev.freelance.freeserve.service;
 import dev.freelance.freeserve.entity.AbstractOrder;
 import dev.freelance.freeserve.inter.OrderInterface;
 import dev.freelance.freeserve.repository.OrderRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

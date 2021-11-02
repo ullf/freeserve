@@ -17,7 +17,7 @@ public class OrderController {
 
     @GetMapping("/create/{name}/{description}")
     public void createOrder(@PathVariable String name,@PathVariable String description) {
-        AbstractOrder order = abstractOrderService.createOrder(name,description);
+        abstractOrderService.createOrder(name,description);
     }
 
 }
