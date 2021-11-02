@@ -45,7 +45,7 @@ public class AbstractClientService implements ClientInterface {
         }
     }
 
-    @Override
+   /* @Override
     public AbstractClient createClientOrder(int clientId,String orderName) {
           Optional<AbstractClient> optClient = clientRepository.findById(clientId);
           var client = optClient.get();
@@ -56,5 +56,5 @@ public class AbstractClientService implements ClientInterface {
               clientRepository.save(client);
           }
         return null;
-    }
+    }*/
 }

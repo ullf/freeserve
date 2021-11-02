@@ -21,13 +21,13 @@ public class AbstractOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "abstractId")
+    @Column(name = "abstract_id")
     private int abstractId;
     private String abstractName;
     private String abstractDescription;
     @OneToMany
     private List<Milestone> milestones = new ArrayList<>();
     @ManyToOne
-    @JoinColumn(name= "id")
+    //@JoinColumn(name= "id")
     private AbstractClient clientsId;
 }

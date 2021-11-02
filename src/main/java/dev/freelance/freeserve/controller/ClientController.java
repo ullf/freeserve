@@ -18,9 +18,9 @@ public class ClientController {
         abstractClientService.createAbstractClient(name,surname,bool);
     }
 
-    @GetMapping("/createOrder/{clientId}/{name}")
+    /*@GetMapping("/createOrder/{clientId}/{name}")
     public void createClientOrder(@PathVariable int clientId,@PathVariable String name) {
         abstractClientService.createClientOrder(clientId,name);
-    }
+    }*/
 
 }

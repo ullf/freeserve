@@ -29,6 +29,5 @@ public class AbstractClient {
     @Column(name = "indicator")
     private boolean indicator; // true: freelancer false: buyer
     @OneToMany
-    @JoinColumn(name = "abstractId")
     private List<AbstractOrder> ordersId = new ArrayList<>();
 }
