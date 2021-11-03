@@ -42,7 +42,7 @@ class FreeserveApplicationTests {
 
 	@Test
 	void pojoServeClient() {
-		AbstractClient client = new AbstractClient(1,"Mark","Sokolov",true,new ArrayList<>());
+		AbstractClient client = new AbstractClient(1,"Mark","Sokolov",true);
 	}
 
 	@Test

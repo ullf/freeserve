@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "abstract_client")
+@Table(name = "clients")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -28,6 +28,4 @@ public class AbstractClient {
     private String surname;
     @Column(name = "indicator")
     private boolean indicator; // true: freelancer false: buyer
-    @OneToMany
-    private List<AbstractOrder> ordersId = new ArrayList<>();
 }

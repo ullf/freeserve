@@ -1,6 +1,5 @@
 package dev.freelance.freeserve.entity;
 
-import dev.freelance.freeserve.inter.MilestoneInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Table(name="milestones")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,6 +21,7 @@ public class Milestone {
     private String milestoneName;
     private String milestoneDescription;
     @ManyToOne
+    @JoinColumn(name="abstractId")
     private AbstractOrder orderId;
 }
 

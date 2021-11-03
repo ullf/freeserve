@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "abstract_order")
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -25,9 +25,8 @@ public class AbstractOrder {
     private int abstractId;
     private String abstractName;
     private String abstractDescription;
-    @OneToMany
+    @OneToMany(mappedBy="orderId")
     private List<Milestone> milestones = new ArrayList<>();
     @ManyToOne
-    //@JoinColumn(name= "id")
     private AbstractClient clientsId;
 }

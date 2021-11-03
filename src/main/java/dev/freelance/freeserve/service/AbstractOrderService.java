@@ -1,6 +1,7 @@
 package dev.freelance.freeserve.service;
 
 import dev.freelance.freeserve.entity.AbstractOrder;
+import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.inter.OrderInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
@@ -34,8 +35,8 @@ public class AbstractOrderService implements OrderInterface {
     }
 
     @Override
-    public int createMilestone() {
-        return 0;
+    public Milestone createMilestone(int orderId, String name, String description) {
+        return null;
     }
 
     @Override
