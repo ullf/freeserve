@@ -25,12 +25,15 @@ public class MilestoneService implements OrderInterface {
     @Override
     public Milestone createMilestone(int orderId,String name, String description) {
         var order = orderRepository.findById(orderId).get();
-        Milestone milestone = new Milestone();
-        milestone.setMilestoneName(name);
-        milestone.setMilestoneDescription(description);
-        milestone.setOrderId(order);
-        milestoneRepository.save(milestone);
-        return milestone;
+        if (order != null) {
+            Milestone milestone = new Milestone();
+            milestone.setMilestoneName(name);
+            milestone.setMilestoneDescription(description);
+            milestone.setOrderId(order);
+            milestoneRepository.save(milestone);
+            return milestone;
+        }
+        return null;
     }
 
     @Override
