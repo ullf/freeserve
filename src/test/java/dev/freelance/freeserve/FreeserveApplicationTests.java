@@ -21,6 +21,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @DataJpaTest
 @RunWith(SpringRunner.class)
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +42,7 @@ class FreeserveApplicationTests {
 
 	@Test
 	void pojoServeClient() {
-		AbstractClient client = new AbstractClient("Mark","Sokolov",true);
+		AbstractClient client = new AbstractClient(1,"Mark","Sokolov",true);
 	}
 
 	@Test
@@ -48,7 +51,7 @@ class FreeserveApplicationTests {
 		System.out.println(client.getName());
 	}
 
-	@Test
+	/*@Test
 	void findOrder() {
 		AbstractOrder order = new AbstractOrder();
 		order.setAbstractId(1);
@@ -58,6 +61,6 @@ class FreeserveApplicationTests {
 		Mockito.when(orderRepository.findById(1).get()).thenReturn(order);
 		//AbstractOrder order = new AbstractOrder(1,"order 4","description of order 3",null);
 
-	}
+	}*/
 
 }

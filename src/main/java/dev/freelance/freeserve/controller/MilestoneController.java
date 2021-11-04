@@ -3,7 +3,9 @@ package dev.freelance.freeserve.controller;
 import dev.freelance.freeserve.entity.AbstractOrder;
 import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.repository.MilestoneRepository;
+import dev.freelance.freeserve.service.MilestoneService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,13 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class MilestoneController {
 
-    private final MilestoneRepository milestoneRepository;
+    private final MilestoneService milestoneService;
 
-    public void createMilestone(@PathVariable String name,@PathVariable String description) {
-        Milestone milestone = new Milestone();
-        milestone.setMilestoneName(name);
-        milestone.setMilestoneDescription(description);
-        milestoneRepository.save(milestone);
+    @GetMapping("/createMilestone/{orderId}/{name}/{description}")
+    public void createMilestone(@PathVariable int orderId,@PathVariable String name,@PathVariable String description) {
+        milestoneService.createMilestone(orderId,name,description);
     }
 
 }

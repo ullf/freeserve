@@ -6,22 +6,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "clients")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class AbstractClient implements ClientInterface {
+@Entity
+public class AbstractClient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "abstract_name")
     private String name;
+    @Column(name = "abstract_surname")
     private String surname;
-    private boolean indicator;
-
-    @Override
-    public boolean isFreelancer() {
-        return indicator == true;
-    }
-
-    @Override
-    public boolean isBuyer() {
-        return indicator == false;
-    }
+    @Column(name = "indicator")
+    private boolean indicator; // true: freelancer false: buyer
 }

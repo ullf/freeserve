@@ -5,9 +5,8 @@ import dev.freelance.freeserve.entity.AbstractOrder;
 import dev.freelance.freeserve.repository.OrderRepository;
 import dev.freelance.freeserve.service.AbstractOrderService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -15,9 +14,24 @@ public class OrderController {
 
     private final AbstractOrderService abstractOrderService;
 
-    @GetMapping("/create/{name}/{description}")
-    public void createOrder(@PathVariable String name,@PathVariable String description) {
-        AbstractOrder order = abstractOrderService.createOrder(name,description);
+    @PostMapping("/createOrder")
+    public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord) {
+        var order = abstractOrderService.createOrder(ord);
+        if(order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+    }
+
+    @GetMapping("/createOrder/{clientId}/{name}/{description}")
+    public ResponseEntity<AbstractOrder> createOrder(@PathVariable int clientId,@PathVariable String name,@PathVariable String description) {
+        var order = abstractOrderService.createOrder(clientId,name,description);
+        if(order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
     }
 
 }

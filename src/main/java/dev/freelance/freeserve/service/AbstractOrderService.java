@@ -1,10 +1,10 @@
 package dev.freelance.freeserve.service;
 
 import dev.freelance.freeserve.entity.AbstractOrder;
+import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.inter.OrderInterface;
+import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +15,39 @@ public class AbstractOrderService implements OrderInterface {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ClientRepository clientRepository;
+
+    public AbstractOrder createOrder(AbstractOrder order) {
+        var client = clientRepository.findById(order.getClientsId().getId()).get();
+        System.out.println(client.getId());
+        if (client.isIndicator() == true ) {
+            orderRepository.save(order);
+            return order;
+        } else {
+            return null;
+        }
+    }
 
     @Transactional
     @Override
-    public AbstractOrder createOrder(String name,String description) {
-        AbstractOrder order = new AbstractOrder();
-        order.setAbstractName(name);
-        order.setAbstractDescription(description);
-        orderRepository.save(order);
-        return order;
+    public AbstractOrder createOrder(int clientId,String name,String description) {
+        var client = clientRepository.findById(clientId).get();
+        System.out.println(client.getId());
+        if (client.isIndicator() == true ) {
+            AbstractOrder order = new AbstractOrder();
+            order.setAbstractName(name);
+            order.setAbstractDescription(description);
+            order.setClientsId(client);
+            orderRepository.save(order);
+            return order;
+        }
+        return null;
     }
 
     @Override
-    public int createMilestone() {
-        return 0;
+    public Milestone createMilestone(int orderId, String name, String description) {
+        return null;
     }
 
     @Override

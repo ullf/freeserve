@@ -1,6 +1,5 @@
 package dev.freelance.freeserve.entity;
 
-import dev.freelance.freeserve.inter.MilestoneInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,12 +7,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Table(name="milestones")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Milestone implements MilestoneInterface {
+public class Milestone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,16 +21,7 @@ public class Milestone implements MilestoneInterface {
     private String milestoneName;
     private String milestoneDescription;
     @ManyToOne
+    @JoinColumn(name="abstractId")
     private AbstractOrder orderId;
-
-    @Override
-    public int createMilestone() {
-        return 0;
-    }
-
-    @Override
-    public int completeMilestone() {
-        return 1;
-    }
 }
 
