@@ -18,6 +18,17 @@ public class AbstractOrderService implements OrderInterface {
     @Autowired
     private ClientRepository clientRepository;
 
+    public AbstractOrder createOrder(AbstractOrder order) {
+        var client = clientRepository.findById(order.getClientsId().getId()).get();
+        System.out.println(client.getId());
+        if (client.isIndicator() == true ) {
+            orderRepository.save(order);
+            return order;
+        } else {
+            return null;
+        }
+    }
+
     @Transactional
     @Override
     public AbstractOrder createOrder(int clientId,String name,String description) {
