@@ -23,6 +23,11 @@ public class MilestoneService implements OrderInterface {
     }
 
     @Override
+    public AbstractOrder checkOrder(int orderId) {
+        return null;
+    }
+
+    @Override
     public Milestone createMilestone(int orderId,String name, String description) {
         var order = orderRepository.findById(orderId).get();
         if (order != null) {

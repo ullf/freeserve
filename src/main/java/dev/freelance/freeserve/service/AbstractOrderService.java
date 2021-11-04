@@ -46,6 +46,11 @@ public class AbstractOrderService implements OrderInterface {
     }
 
     @Override
+    public AbstractOrder checkOrder(int orderId) {
+        return orderRepository.findById(orderId).get();
+    }
+
+    @Override
     public Milestone createMilestone(int orderId, String name, String description) {
         return null;
     }

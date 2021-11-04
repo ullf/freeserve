@@ -5,6 +5,8 @@ import dev.freelance.freeserve.entity.BuyerClient;
 import dev.freelance.freeserve.inter.ClientInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,6 +34,7 @@ public class AbstractClientService implements ClientInterface {
             AbstractClient buyer = new BuyerClient();
             buyer.setIndicator(indicator);
             buyer.setName(name);
+            buyer.setNickname(name);
             buyer.setSurname(surname);
             clientRepository.save(buyer);
             return buyer;
@@ -39,10 +42,20 @@ public class AbstractClientService implements ClientInterface {
             AbstractClient freelancer = new AbstractClient();
             freelancer.setIndicator(indicator);
             freelancer.setName(name);
+            freelancer.setNickname("frl_"+name);
             freelancer.setSurname(surname);
             clientRepository.save(freelancer);
             return freelancer;
         }
+    }
+
+    public AbstractClient findByNickname(String nickname) {
+        var client = clientRepository.findAbstractClientByNickname(nickname);
+        return client;
+    }
+
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return clientRepository.loadUserByUsername(username);
     }
 
    /* @Override

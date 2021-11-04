@@ -40,10 +40,6 @@ class FreeserveApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void pojoServeClient() {
-		AbstractClient client = new AbstractClient(1,"Mark","Sokolov",true);
-	}
 
 	@Test
 	void pojoBuyerClient() {

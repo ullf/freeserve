@@ -1,14 +1,11 @@
 package dev.freelance.freeserve.entity;
 
-import dev.freelance.freeserve.inter.ClientInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Table(name = "clients")
 @AllArgsConstructor
@@ -28,4 +25,5 @@ public class AbstractClient {
     private String surname;
     @Column(name = "indicator")
     private boolean indicator; // true: freelancer false: buyer
+    private String nickname;
 }
