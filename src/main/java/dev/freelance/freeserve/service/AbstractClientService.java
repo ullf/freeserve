@@ -28,6 +28,17 @@ public class AbstractClientService implements ClientInterface {
         return false;
     }
 
+    public AbstractClient createAbstractClient(AbstractClient abstractClient) {
+        if (abstractClient.isIndicator() == false) {
+            clientRepository.save(abstractClient);
+            return abstractClient;
+        } else {
+            abstractClient.setNickname("frl_"+abstractClient.getNickname());
+            clientRepository.save(abstractClient);
+            return abstractClient;
+        }
+    }
+
     @Override
     public AbstractClient createAbstractClient(String name,String surname,boolean indicator) {
         if (indicator == false) {
