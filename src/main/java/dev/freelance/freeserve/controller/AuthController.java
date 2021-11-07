@@ -16,8 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,8 +40,12 @@ public class AuthController {
             String token = Jwts.builder().setIssuer("dev.freelance.freeserve").
                     setSubject(client.getNickname()).
                     signWith(SignatureAlgorithm.HS512, "ewUgbh93").compact();
+            StringBuilder builder = new StringBuilder();
+            token = builder.append("rQhrg565y5j37").append(token).toString();
+            System.out.println(token);
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token).build();
         } catch (BadCredentialsException ex) {
+            System.out.println("no");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
            // return ResponseEntity.status(404).build();
         }
