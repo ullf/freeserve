@@ -5,21 +5,21 @@ import lombok.Data;
 
 public class AuthRequest {
     private String nickname;
-    private String surname;
+    private String password;
 
     public String getNickname() {
         return nickname;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 }

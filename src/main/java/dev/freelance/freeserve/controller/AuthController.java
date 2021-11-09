@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 @AllArgsConstructor
 public class AuthController {
@@ -27,23 +29,25 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/api/login")
-    public ResponseEntity<AbstractClient> login(@RequestBody AbstractClient abstractClient) {
+    public ResponseEntity<AbstractClient> login(@RequestBody AuthRequest authRequest) {
         if (authenticationManager == null) {
             return ResponseEntity.status(404).build();
         }
         try {
             Authentication authentication = authenticationManager.
-                    authenticate(new UsernamePasswordAuthenticationToken(abstractClient.getNickname(), abstractClient.getPassword()));
+                    authenticate(new UsernamePasswordAuthenticationToken(authRequest.getNickname(), authRequest.getPassword()));
 
             AbstractClient client = (AbstractClient) authentication.getPrincipal();
-            System.out.println("ok");
+            //System.out.println("ok "+client.getNickname()+ " "+client.getPassword());
             String token = Jwts.builder().setIssuer("dev.freelance.freeserve").
-                    setSubject(client.getNickname()).
+                    setSubject(client.getNickname()).setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)).
                     signWith(SignatureAlgorithm.HS512, "ewUgbh93").compact();
+            //System.out.println(token);
             StringBuilder builder = new StringBuilder();
-            token = builder.append("rQhrg565y5j37").append(token).toString();
-            System.out.println(token);
-            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token).build();
+            var token2 = builder.append("Bearer ").append(token).toString();
+            System.out.println(token2);
+            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token2).body(client);
         } catch (BadCredentialsException ex) {
             System.out.println("no");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

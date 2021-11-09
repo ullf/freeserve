@@ -1,5 +1,7 @@
 package dev.freelance.freeserve.config;
 
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(header.startsWith("rQhrg565y5j37")) {
-            System.out.println("yeaah");
-        }
-        if (request != null) {
+        //System.out.println(header);
+        if (header.startsWith("Bearer ")) {
             System.out.println("header: "+header+" "+request.getHeader(HttpHeaders.HOST));
+            System.out.println(Jwts.parser().parse(header).getBody().toString());
         }
-        filterChain.doFilter(request,response);
+        if(!header.startsWith("Bearer ")){
+            System.out.println("filter: "+header);
+          //  var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
+          //  System.out.println(check.getBody().getSubject());
+            filterChain.doFilter(request,response);
+        }
+
     }
 }
