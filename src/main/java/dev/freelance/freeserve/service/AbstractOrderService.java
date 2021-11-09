@@ -5,19 +5,20 @@ import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.inter.OrderInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @Service
+@AllArgsConstructor
 public class AbstractOrderService implements OrderInterface {
 
-    @Autowired
     private OrderRepository orderRepository;
-    @Autowired
     private ClientRepository clientRepository;
 
+    @Transactional
     public AbstractOrder createOrder(AbstractOrder order) {
         var client = clientRepository.findById(order.getClientsId().getId()).get();
         System.out.println(client.getId());

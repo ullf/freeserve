@@ -1,12 +1,18 @@
 package dev.freelance.freeserve.config;
 
+import dev.freelance.freeserve.entity.AbstractClient;
+import dev.freelance.freeserve.service.AbstractClientService;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,13 +26,23 @@ import java.io.IOException;
 @NoArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
+    @Autowired
+    private AbstractClientService abstractClientService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         //System.out.println(header);
         if (header.startsWith("Bearer ")) {
             System.out.println("header: "+header+" "+request.getHeader(HttpHeaders.HOST));
-            System.out.println(Jwts.parser().parse(header).getBody().toString());
+            var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
+            System.out.println(check.getBody().getSubject());
+            UserDetails user = abstractClientService.loadUserByUsername(check.getBody().getSubject());
+            System.out.println(user.getUsername());
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+                    = new UsernamePasswordAuthenticationToken(user,null,null);
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            filterChain.doFilter(request,response);
         }
         if(!header.startsWith("Bearer ")){
             System.out.println("filter: "+header);

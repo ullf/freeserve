@@ -65,7 +65,7 @@ public class AbstractClientService implements ClientInterface {
         return client;
     }
 
-    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return clientRepository.loadUserByUsername(username);
     }
 
