@@ -1,8 +1,5 @@
 package dev.freelance.freeserve.controller;
 
-import dev.freelance.freeserve.entity.AbstractOrder;
-import dev.freelance.freeserve.entity.Milestone;
-import dev.freelance.freeserve.repository.MilestoneRepository;
 import dev.freelance.freeserve.service.MilestoneService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

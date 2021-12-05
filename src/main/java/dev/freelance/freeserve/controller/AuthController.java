@@ -2,13 +2,9 @@ package dev.freelance.freeserve.controller;
 
 import dev.freelance.freeserve.entity.AbstractClient;
 import dev.freelance.freeserve.entity.AuthRequest;
-import dev.freelance.freeserve.service.AbstractClientService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

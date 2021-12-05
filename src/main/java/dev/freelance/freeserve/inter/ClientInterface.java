@@ -1,7 +1,6 @@
 package dev.freelance.freeserve.inter;
 
 import dev.freelance.freeserve.entity.AbstractClient;
-import dev.freelance.freeserve.entity.AbstractOrder;
 
 public interface ClientInterface {
     boolean isFreelancer();

@@ -9,14 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 public class AbstractClientService implements ClientInterface {
 
     private ClientRepository clientRepository;
-    private AbstractOrderService abstractOrderService;
 
     @Override
     public boolean isFreelancer() {

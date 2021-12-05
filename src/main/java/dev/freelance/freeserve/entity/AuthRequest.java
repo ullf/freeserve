@@ -1,8 +1,5 @@
 package dev.freelance.freeserve.entity;
 
-import lombok.Data;
-
-
 public class AuthRequest {
     private String nickname;
     private String password;
