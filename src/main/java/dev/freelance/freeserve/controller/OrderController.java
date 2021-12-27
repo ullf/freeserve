@@ -1,10 +1,17 @@
 package dev.freelance.freeserve.controller;
 
+import dev.freelance.freeserve.entity.AbstractClient;
 import dev.freelance.freeserve.entity.AbstractOrder;
 import dev.freelance.freeserve.service.AbstractOrderService;
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @AllArgsConstructor
@@ -13,7 +20,10 @@ public class OrderController {
     private final AbstractOrderService abstractOrderService;
 
     @PostMapping("/createOrder")
-    public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord) {
+    public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord, Principal principal) {
+        System.out.println("Principal: "+principal.getName());
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+      //  System.out.println("Sign: "+Jwts.parser().);
         var order = abstractOrderService.createOrder(ord);
         if(order != null) {
             return ResponseEntity.ok(order);

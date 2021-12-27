@@ -16,8 +16,8 @@ public class ClientController {
 
     @PostMapping("/createClient")
     public void createAbstractClient(@RequestBody AbstractClient abstractClient) {
-       abstractClient.setPassword(passwordEncoder.encode(abstractClient.getPassword()));
-       abstractClientService.createAbstractClient(abstractClient);
+        abstractClient.setPassword(passwordEncoder.encode(abstractClient.getPassword()));
+        abstractClientService.createAbstractClient(abstractClient);
     }
 
     @GetMapping("/createClient/{name}/{surname}/{bool}")

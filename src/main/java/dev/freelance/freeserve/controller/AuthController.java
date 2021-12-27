@@ -39,7 +39,7 @@ public class AuthController {
                     setSubject(client.getNickname()).setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)).
                     signWith(SignatureAlgorithm.HS512, "ewUgbh93").compact();
-            //System.out.println(token);
+            System.out.println(token);
             StringBuilder builder = new StringBuilder();
             var token2 = builder.append("Bearer ").append(token).toString();
             System.out.println(token2);

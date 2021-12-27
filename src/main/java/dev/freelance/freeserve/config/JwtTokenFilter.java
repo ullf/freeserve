@@ -27,7 +27,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        //System.out.println(header);
+        System.out.println(header);
+        if(header == null){
+            //System.out.println("filter: "+header);
+            //System.out.println(SecurityContextHolder.getContext());
+            //  var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
+            //  System.out.println(check.getBody().getSubject());
+            filterChain.doFilter(request,response);
+        }
         if (header.startsWith("Bearer ")) {
             System.out.println("header: "+header+" "+request.getHeader(HttpHeaders.HOST));
             var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
@@ -39,11 +46,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     = new UsernamePasswordAuthenticationToken(user,null,null);
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             filterChain.doFilter(request,response);
-        }
-        if(!header.startsWith("Bearer ")){
-            System.out.println("filter: "+header);
-          //  var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
-          //  System.out.println(check.getBody().getSubject());
+        } else {
+            //System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             filterChain.doFilter(request,response);
         }
 
