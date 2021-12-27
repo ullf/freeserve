@@ -7,11 +7,16 @@ import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @AllArgsConstructor
@@ -20,13 +25,14 @@ public class OrderController {
     private final AbstractOrderService abstractOrderService;
 
     @PostMapping("/createOrder")
-    public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord, Principal principal) {
-        System.out.println("Principal: "+principal.getName());
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+    public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord, HttpServletRequest request) {
+       // System.out.println("Principal: "+principal.getName());
+       HttpSession session = request.getSession(true);
+       System.out.println("Data: "+session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY)+"\n"+SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
       //  System.out.println("Sign: "+Jwts.parser().);
-        var order = abstractOrderService.createOrder(ord);
-        if(order != null) {
-            return ResponseEntity.ok(order);
+      var order = abstractOrderService.createOrder(ord);
+      if(order != null) {
+          return ResponseEntity.ok(order);
         } else {
             return ResponseEntity.status(404).build();
         }
