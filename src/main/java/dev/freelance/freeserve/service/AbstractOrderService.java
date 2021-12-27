@@ -1,7 +1,6 @@
 package dev.freelance.freeserve.service;
 
 import dev.freelance.freeserve.entity.AbstractOrder;
-import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.inter.OrderInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
@@ -21,12 +20,20 @@ public class AbstractOrderService implements OrderInterface {
     public AbstractOrder createOrder(AbstractOrder order) {
         var client = clientRepository.findById(order.getClientsId().getId()).get();
         System.out.println(client.getId());
-        if (client.isIndicator() == true ) {
+        if (client.isIndicator() == false ) {
             orderRepository.save(order);
             return order;
         } else {
             return null;
         }
+    }
+
+    public AbstractOrder takeOrder(int id) {
+        var order = orderRepository.findById(id).get();
+        if (order != null) {
+
+        }
+        return null;
     }
 
     @Transactional
@@ -51,17 +58,7 @@ public class AbstractOrderService implements OrderInterface {
     }
 
     @Override
-    public Milestone createMilestone(int orderId, String name, String description) {
-        return null;
-    }
-
-    @Override
     public int completeOrder() {
-        return 0;
-    }
-
-    @Override
-    public int completeMilestone() {
         return 0;
     }
 }

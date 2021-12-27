@@ -40,7 +40,6 @@ public class AuthController {
                     authenticate(new UsernamePasswordAuthenticationToken(authRequest.getNickname(), authRequest.getPassword()));
 
             AbstractClient client = (AbstractClient) authentication.getPrincipal();
-            //System.out.println("ok "+client.getNickname()+ " "+client.getPassword());
             String token = Jwts.builder().setIssuer("dev.freelance.freeserve").
                     setSubject(client.getNickname()).setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)).
@@ -53,6 +52,7 @@ public class AuthController {
             sc.setAuthentication(authentication);
             HttpSession session = request.getSession(true);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+            session.setMaxInactiveInterval(30);
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token2).body(client);
         } catch (BadCredentialsException ex) {
             System.out.println("no");

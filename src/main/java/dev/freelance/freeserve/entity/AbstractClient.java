@@ -28,6 +28,7 @@ public class AbstractClient implements UserDetails {
     private String surname;
     @Column(name = "indicator")
     private boolean indicator; // true: freelancer false: buyer
+    @Column(unique = true)
     private String nickname;
     private String password;
 

@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-
 @Service
 @AllArgsConstructor
 public class AbstractClientService implements ClientInterface {

@@ -20,6 +20,7 @@ public class AbstractOrder {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "abstract_id")
     private int abstractId;
+    @Column(unique = true)
     private String abstractName;
     private String abstractDescription;
     @OneToMany(mappedBy="orderId")

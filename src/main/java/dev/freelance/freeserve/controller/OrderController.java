@@ -31,7 +31,8 @@ public class OrderController {
        System.out.println("Data: "+session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY)+"\n");
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
        String currentPrincipalName = authentication.getName();
-       System.out.println(currentPrincipalName+" "+authentication.isAuthenticated());
+       int tmp = authentication.getAuthorities().size();
+       System.out.println(currentPrincipalName+" "+authentication.isAuthenticated()+" "+tmp);
       //  System.out.println("Sign: "+Jwts.parser().);
       var order = abstractOrderService.createOrder(ord);
       if(order != null) {

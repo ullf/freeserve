@@ -23,5 +23,6 @@ public class Milestone {
     @ManyToOne
     @JoinColumn(name="abstractId")
     private AbstractOrder orderId;
+    private boolean completed = false;
 }
 

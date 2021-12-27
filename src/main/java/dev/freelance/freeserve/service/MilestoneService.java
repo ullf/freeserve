@@ -1,31 +1,20 @@
 package dev.freelance.freeserve.service;
 
-import dev.freelance.freeserve.entity.AbstractOrder;
 import dev.freelance.freeserve.entity.Milestone;
-import dev.freelance.freeserve.inter.OrderInterface;
+import dev.freelance.freeserve.inter.MilestoneInterface;
 import dev.freelance.freeserve.repository.MilestoneRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MilestoneService implements OrderInterface {
+public class MilestoneService implements MilestoneInterface {
 
     @Autowired
     private MilestoneRepository milestoneRepository;
 
     @Autowired
     private OrderRepository orderRepository;
-
-    @Override
-    public AbstractOrder createOrder(int clientId, String name, String description) {
-        return null;
-    }
-
-    @Override
-    public AbstractOrder checkOrder(int orderId) {
-        return null;
-    }
 
     @Override
     public Milestone createMilestone(int orderId,String name, String description) {
@@ -42,12 +31,18 @@ public class MilestoneService implements OrderInterface {
     }
 
     @Override
-    public int completeOrder() {
+    public int completeMilestone() {
         return 0;
     }
 
     @Override
-    public int completeMilestone() {
-        return 0;
+    public int createMilestone(Milestone milestone) {
+        var order = orderRepository.findById(milestone.getOrderId().getAbstractId()).get();
+        if (order != null) {
+            milestoneRepository.save(milestone);
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }
