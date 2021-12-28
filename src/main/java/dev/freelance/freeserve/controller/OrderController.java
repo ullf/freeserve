@@ -14,6 +14,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -56,6 +58,27 @@ public class OrderController {
         } else {
             return ResponseEntity.status(404).build();
         }
+    }
+
+    @GetMapping("/getAllOrders/{id}")
+    public ResponseEntity<List<AbstractOrder>> createOrder(@PathVariable int id) {
+        var order = abstractOrderService.getAllOrders(id);
+        if(order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.status(404).body(order);
+        }
+    }
+
+    @GetMapping("/completeOrder/{orderId}")
+    public ResponseEntity<Integer> completeOrder(@PathVariable int orderId) {
+        int result = abstractOrderService.completeOrder(orderId);
+        if (result == 0) {
+            return ResponseEntity.status(200).body(result);
+        } else {
+            return ResponseEntity.status(404).body(result);
+        }
+       
     }
 
 }

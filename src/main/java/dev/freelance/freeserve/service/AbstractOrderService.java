@@ -7,6 +7,9 @@ import dev.freelance.freeserve.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 @Service
@@ -31,7 +34,7 @@ public class AbstractOrderService implements OrderInterface {
     public AbstractOrder takeOrder(int id) {
         var order = orderRepository.findById(id).get();
         if (order != null) {
-
+            
         }
         return null;
     }
@@ -57,8 +60,22 @@ public class AbstractOrderService implements OrderInterface {
         return orderRepository.findById(orderId).get();
     }
 
+    @Transactional
     @Override
-    public int completeOrder() {
-        return 0;
+    public int completeOrder(int orderId) {
+        var order = orderRepository.findById(orderId).get();
+        if (order != null) {
+            order.setCompleted(true);
+            orderRepository.save(order);
+            return 0;
+        }
+        return -1;
+    }
+
+    @Override
+    public List<AbstractOrder> getAllOrders(int clientId) {
+        var list = orderRepository.findAllOrders(clientId);
+        System.out.println(list.size());
+        return list;
     }
 }
