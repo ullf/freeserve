@@ -73,8 +73,8 @@ public class AbstractOrderService implements OrderInterface {
     }
 
     @Override
-    public List<AbstractOrder> getAllOrders(int clientId) {
-        var list = orderRepository.findAllOrders(clientId);
+    public List<AbstractOrder> getAllOrdersById(int clientId) {
+        var list = orderRepository.findAllOrdersById(clientId);
         System.out.println(list.size());
         return list;
     }

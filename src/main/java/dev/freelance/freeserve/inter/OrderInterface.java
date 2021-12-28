@@ -9,5 +9,5 @@ public interface OrderInterface {
     AbstractOrder createOrder(int clientId,String name, String description);
     AbstractOrder checkOrder(int orderId);
     int completeOrder(int orderId);
-    List<AbstractOrder> getAllOrders(int clientId);
+    List<AbstractOrder> getAllOrdersById(int clientId);
 }

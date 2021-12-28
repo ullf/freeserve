@@ -4,6 +4,8 @@ import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.service.MilestoneService;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +31,26 @@ public class MilestoneController {
             return ResponseEntity.ok(milestone);
         } else {
             return ResponseEntity.status(404).body(milestone);
+        }
+    }
+
+    @GetMapping("/getAllMilestones/{id}")
+    public ResponseEntity<List<Milestone>> createOrder(@PathVariable int id) {
+        var milestone = milestoneService.getAllMilestonesByOrderId(id);
+        if(milestone != null) {
+            return ResponseEntity.ok(milestone);
+        } else {
+            return ResponseEntity.status(404).body(milestone);
+        }
+    }
+
+    @GetMapping("/completeMilestone/{milestoneId}")
+    public ResponseEntity<Integer> completeMilestone(@PathVariable int milestoneId) {
+        int result = milestoneService.completeMilestone(milestoneId);
+        if (result == 0) {
+            return ResponseEntity.status(200).body(result);
+        } else {
+            return ResponseEntity.status(404).body(result);
         }
     }
 

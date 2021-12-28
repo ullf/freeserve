@@ -62,7 +62,7 @@ public class OrderController {
 
     @GetMapping("/getAllOrders/{id}")
     public ResponseEntity<List<AbstractOrder>> createOrder(@PathVariable int id) {
-        var order = abstractOrderService.getAllOrders(id);
+        var order = abstractOrderService.getAllOrdersById(id);
         if(order != null) {
             return ResponseEntity.ok(order);
         } else {
