@@ -6,10 +6,7 @@ import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 import java.util.List;
-
 import javax.transaction.Transactional;
 
 @Service

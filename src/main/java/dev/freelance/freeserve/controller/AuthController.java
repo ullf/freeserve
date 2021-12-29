@@ -52,7 +52,7 @@ public class AuthController {
             sc.setAuthentication(authentication);
             HttpSession session = request.getSession(true);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
-            session.setMaxInactiveInterval(30);
+            session.setMaxInactiveInterval(300);
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token2).body(client);
         } catch (BadCredentialsException ex) {
             System.out.println("no");

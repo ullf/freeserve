@@ -1,12 +1,15 @@
 package dev.freelance.freeserve.config;
 
+import dev.freelance.freeserve.entity.AbstractClient;
 import dev.freelance.freeserve.service.AbstractClientService;
 import io.jsonwebtoken.Jwts;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @Component
 @NoArgsConstructor
@@ -30,7 +34,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println(header);
+       // System.out.println(header);
+       
         if(header == null){
             //System.out.println("filter: "+header);
             //System.out.println(SecurityContextHolder.getContext());

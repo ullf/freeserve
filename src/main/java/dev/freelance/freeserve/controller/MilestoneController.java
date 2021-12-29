@@ -6,7 +6,12 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+import org.apache.tomcat.util.descriptor.web.ContextHandler;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MilestoneController {
 
     private final MilestoneService milestoneService;
+    //@Autowired
+    @Qualifier("sessionRegistry")
+    private SessionRegistry sessionRegistry;
 
     @GetMapping("/createMilestone/{orderId}/{name}/{description}")
     public void createMilestone(@PathVariable int orderId,@PathVariable String name,@PathVariable String description) {
@@ -36,6 +44,7 @@ public class MilestoneController {
 
     @GetMapping("/getAllMilestones/{id}")
     public ResponseEntity<List<Milestone>> createOrder(@PathVariable int id) {
+        System.out.println("Size: "+sessionRegistry.getAllPrincipals().size());
         var milestone = milestoneService.getAllMilestonesByOrderId(id);
         if(milestone != null) {
             return ResponseEntity.ok(milestone);
