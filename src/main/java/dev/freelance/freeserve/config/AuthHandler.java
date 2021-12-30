@@ -15,9 +15,6 @@ import dev.freelance.freeserve.entity.AbstractClient;
 
 @Component
 public class AuthHandler implements AuthenticationSuccessHandler {
-
-    //@Autowired
-    //ActiveUserStore activeUserStore;
     
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, 

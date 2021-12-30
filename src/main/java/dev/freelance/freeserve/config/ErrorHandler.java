@@ -30,24 +30,24 @@ import dev.freelance.freeserve.entity.ApiError;
 @ControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-            HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
-        //return super.handleMethodArgumentNotValid(ex, headers, status, request);
-        String error = "Not valid argument!";
-        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, error));
-    }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
         // TODO Auto-generated method stub
         String error = "Error!";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, error));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
+        // TODO Auto-generated method stub
+        String error = "Error!";
+        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, error));
     }
 }

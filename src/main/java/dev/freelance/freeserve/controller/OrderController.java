@@ -37,10 +37,10 @@ public class OrderController {
        System.out.println(currentPrincipalName+" "+authentication.isAuthenticated()+" "+tmp);
       //  System.out.println("Sign: "+Jwts.parser().);
       var order = abstractOrderService.createOrder(ord);
-      if(order != null) {
+      if(order.getAbstractName() != null && order.getClientsId() != null) {
           return ResponseEntity.ok(order);
         } else {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.badRequest().body(order);
         }
     }
 
