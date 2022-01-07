@@ -5,6 +5,10 @@ import dev.freelance.freeserve.repository.ClientRepository;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
+
+import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.orm.hibernate5.SpringSessionSynchronization;
@@ -39,7 +43,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
         http.cors().and().csrf().disable();
-        http.sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry());
+        http
+        .exceptionHandling()
+        .authenticationEntryPoint((request, response, e) -> 
+        {
+            response.setContentType("application/json;charset=UTF-8");
+            if (request.getRequestURI().contains("login")) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Wrong credentials");
+            } else {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Unknown error,authentication could be needed");
+            }
+        
+        });
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
                 .antMatchers("/api/login").permitAll().antMatchers("/createClient").permitAll().anyRequest().authenticated();
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

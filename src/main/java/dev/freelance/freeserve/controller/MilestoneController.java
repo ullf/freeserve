@@ -4,7 +4,10 @@ import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.service.MilestoneService;
 import lombok.AllArgsConstructor;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.util.descriptor.web.ContextHandler;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,18 +41,18 @@ public class MilestoneController {
         if (result == 0) {
             return ResponseEntity.ok(milestone);
         } else {
-            return ResponseEntity.status(404).body(milestone);
+            return ResponseEntity.status(400).body(milestone);
         }
     }
 
-    @GetMapping("/getAllMilestones/{id}")
-    public ResponseEntity<List<Milestone>> createOrder(@PathVariable int id) {
-        System.out.println("Size: "+sessionRegistry.getAllPrincipals().size());
+    @GetMapping("/getAllMilestonesByOrderId/{id}")
+    public ResponseEntity<List<Milestone>> createOrder(@PathVariable int id,Principal principal) {
+        System.out.println("Sec: "+SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
         var milestone = milestoneService.getAllMilestonesByOrderId(id);
         if(milestone != null) {
             return ResponseEntity.ok(milestone);
         } else {
-            return ResponseEntity.status(404).body(milestone);
+            return ResponseEntity.status(400).body(milestone);
         }
     }
 
@@ -59,7 +62,7 @@ public class MilestoneController {
         if (result == 0) {
             return ResponseEntity.status(200).body(result);
         } else {
-            return ResponseEntity.status(404).body(result);
+            return ResponseEntity.status(400).body(result);
         }
     }
 

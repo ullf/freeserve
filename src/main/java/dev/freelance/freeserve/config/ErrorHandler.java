@@ -50,4 +50,8 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         String error = "Error!";
         return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, error));
     }
+
+    
+
+    
 }

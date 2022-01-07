@@ -2,9 +2,12 @@ package dev.freelance.freeserve.controller;
 
 import dev.freelance.freeserve.entity.AbstractClient;
 import dev.freelance.freeserve.entity.AbstractOrder;
+import dev.freelance.freeserve.entity.ApiError;
 import dev.freelance.freeserve.service.AbstractOrderService;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,25 +33,31 @@ public class OrderController {
     @PostMapping("/createOrder")
     public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord, HttpServletRequest request) {
        // System.out.println("Principal: "+principal.getName());
-       HttpSession session = request.getSession(true);
-       System.out.println("Data: "+session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY)+"\n");
-       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-       String currentPrincipalName = authentication.getName();
-       int tmp = authentication.getAuthorities().size();
-       System.out.println(currentPrincipalName+" "+authentication.isAuthenticated()+" "+tmp);
       //  System.out.println("Sign: "+Jwts.parser().);
       var order = abstractOrderService.createOrder(ord);
-      if(order.getAbstractName() != null && order.getClientsId() != null) {
+      if(order.getAbstractName() != null && order.getClientsId().getId() != 0) {
+          System.out.println("created!");
           return ResponseEntity.ok(order);
         } else {
+            System.out.println("not created");
             return ResponseEntity.badRequest().body(order);
         }
     }
 
     @GetMapping("/checkOrder/{orderId}")
-    public ResponseEntity<AbstractOrder> checkOrder(@PathVariable int orderId) {
+    public ResponseEntity<?> checkOrder(@PathVariable int orderId) {
         var order = abstractOrderService.checkOrder(orderId);
-        return ResponseEntity.ok(order);
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            ApiError err = new ApiError();
+            err.setMessage("No order found with such order id");
+            err.setStatus(HttpStatus.NOT_FOUND);
+            Optional<ApiError> op_err = Optional.of(err);
+            return ResponseEntity.of(op_err);
+        }
+
+        
     }
 
     @GetMapping("/createOrder/{clientId}/{name}/{description}")
@@ -60,7 +70,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/getAllOrders/{id}")
+    @GetMapping("/getAllOrdersByClientId/{id}")
     public ResponseEntity<List<AbstractOrder>> createOrder(@PathVariable int id) {
         var order = abstractOrderService.getAllOrdersById(id);
         if(order != null) {
