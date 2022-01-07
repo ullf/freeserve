@@ -1,18 +1,14 @@
 package dev.freelance.freeserve.controller;
 
+import dev.freelance.freeserve.entity.ApiError;
 import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.service.MilestoneService;
 import lombok.AllArgsConstructor;
-
 import java.security.Principal;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.tomcat.util.descriptor.web.ContextHandler;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,23 +42,29 @@ public class MilestoneController {
     }
 
     @GetMapping("/getAllMilestonesByOrderId/{id}")
-    public ResponseEntity<List<Milestone>> createOrder(@PathVariable int id,Principal principal) {
+    public ResponseEntity<List<?>> createOrder(@PathVariable int id,Principal principal) {
         System.out.println("Sec: "+SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
-        var milestone = milestoneService.getAllMilestonesByOrderId(id);
-        if(milestone != null) {
-            return ResponseEntity.ok(milestone);
+        var milestones = milestoneService.getAllMilestonesByOrderId(id);
+        if(milestones.size() != 0) {
+            return ResponseEntity.ok(milestones);
         } else {
-            return ResponseEntity.status(400).body(milestone);
+            ApiError err = new ApiError();
+            err.setMessage("No milestones found with such order id");
+            err.setStatus(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(404).body(List.of(err));
         }
     }
 
     @GetMapping("/completeMilestone/{milestoneId}")
-    public ResponseEntity<Integer> completeMilestone(@PathVariable int milestoneId) {
+    public ResponseEntity<?> completeMilestone(@PathVariable int milestoneId) {
         int result = milestoneService.completeMilestone(milestoneId);
         if (result == 0) {
             return ResponseEntity.status(200).body(result);
         } else {
-            return ResponseEntity.status(400).body(result);
+            ApiError err = new ApiError();
+            err.setMessage("No milestone found with such milestone id");
+            err.setStatus(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(404).body(err);
         }
     }
 

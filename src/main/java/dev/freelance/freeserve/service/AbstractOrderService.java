@@ -64,8 +64,9 @@ public class AbstractOrderService implements OrderInterface {
     @Transactional
     @Override
     public int completeOrder(int orderId) {
-        var order = orderRepository.findById(orderId).get();
-        if (order != null) {
+        var op_order = orderRepository.findById(orderId);
+        if (op_order.isPresent()) {
+            var order = op_order.get();
             order.setCompleted(true);
             orderRepository.save(order);
             return 0;
