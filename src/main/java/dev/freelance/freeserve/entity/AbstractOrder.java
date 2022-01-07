@@ -1,13 +1,13 @@
 package dev.freelance.freeserve.entity;
 
-import dev.freelance.freeserve.inter.OrderInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +23,13 @@ public class AbstractOrder {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "abstract_id")
     private int abstractId;
+    @Column(unique = true)
     private String abstractName;
     private String abstractDescription;
+    @JsonIgnore
     @OneToMany(mappedBy="orderId")
     private List<Milestone> milestones = new ArrayList<>();
     @ManyToOne
     private AbstractClient clientsId;
+    private boolean completed = false;
 }

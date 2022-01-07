@@ -1,28 +1,16 @@
 package dev.freelance.freeserve;
 
-import dev.freelance.freeserve.entity.AbstractClient;
-import dev.freelance.freeserve.entity.AbstractOrder;
 import dev.freelance.freeserve.entity.BuyerClient;
 import dev.freelance.freeserve.repository.OrderRepository;
 import dev.freelance.freeserve.service.AbstractOrderService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
@@ -40,10 +28,6 @@ class FreeserveApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void pojoServeClient() {
-		AbstractClient client = new AbstractClient(1,"Mark","Sokolov",true);
-	}
 
 	@Test
 	void pojoBuyerClient() {

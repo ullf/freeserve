@@ -1,32 +1,42 @@
 package dev.freelance.freeserve.service;
 
 import dev.freelance.freeserve.entity.AbstractOrder;
-import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.inter.OrderInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 @Service
+@AllArgsConstructor
 public class AbstractOrderService implements OrderInterface {
 
-    @Autowired
     private OrderRepository orderRepository;
-    @Autowired
     private ClientRepository clientRepository;
 
+    @Transactional
     public AbstractOrder createOrder(AbstractOrder order) {
-        var client = clientRepository.findById(order.getClientsId().getId()).get();
-        System.out.println(client.getId());
-        if (client.isIndicator() == true ) {
-            orderRepository.save(order);
-            return order;
-        } else {
-            return null;
+        if (order.getClientsId() != null) {
+            var client = clientRepository.findById(order.getClientsId().getId()).get();
+            System.out.println(client.getId());
+            if (client.isIndicator() == false ) {
+                orderRepository.save(order);
+                return order;
+            }
         }
+        return new AbstractOrder();
+    }
+
+    public AbstractOrder takeOrder(int id) {
+        var order = orderRepository.findById(id).get();
+        if (order != null) {
+            
+        }
+        return null;
     }
 
     @Transactional
@@ -42,21 +52,32 @@ public class AbstractOrderService implements OrderInterface {
             orderRepository.save(order);
             return order;
         }
-        return null;
+        return new AbstractOrder();
     }
 
     @Override
-    public Milestone createMilestone(int orderId, String name, String description) {
-        return null;
+    public AbstractOrder checkOrder(int orderId) {
+        Optional<AbstractOrder> op_order =  orderRepository.findById(orderId);
+        return op_order.isEmpty() ? null : op_order.get();
+    }
+
+    @Transactional
+    @Override
+    public int completeOrder(int orderId) {
+        var op_order = orderRepository.findById(orderId);
+        if (op_order.isPresent()) {
+            var order = op_order.get();
+            order.setCompleted(true);
+            orderRepository.save(order);
+            return 0;
+        }
+        return -1;
     }
 
     @Override
-    public int completeOrder() {
-        return 0;
-    }
-
-    @Override
-    public int completeMilestone() {
-        return 0;
+    public List<AbstractOrder> getAllOrdersById(int clientId) {
+        var list = orderRepository.findAllOrdersById(clientId);
+        System.out.println(list.size());
+        return list;
     }
 }
