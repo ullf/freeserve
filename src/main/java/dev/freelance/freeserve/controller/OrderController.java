@@ -32,6 +32,11 @@ public class OrderController {
         return ResponseEntity.ok(abstractOrderService.takeOrder(orderId));
     }
 
+    @GetMapping("/getTakenOrders/{clientId}")
+    public ResponseEntity<List<AbstractOrder>> getTakenOrders(@PathVariable int clientId) {
+        return ResponseEntity.ok(abstractOrderService.getTakenOrders(clientId));
+    }
+
     @GetMapping("/checkOrder/{orderId}")
     public ResponseEntity<?> checkOrder(@PathVariable int orderId) {
         var order = abstractOrderService.checkOrder(orderId);

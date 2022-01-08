@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,8 +50,24 @@ public class AbstractOrderService implements OrderInterface {
                 taken.setOrderId(id);
                 taken.setFreelancerId(obj.getId());
                 takenOrdersRepository.save(taken);
-                System.out.println("Size: "+takenOrdersRepository.findAllTakenByOrdersId(id).size());
                 System.out.println("taken!");
+            }
+        }
+        return null;
+    }
+
+    public List<AbstractOrder> getTakenOrders(int clientId) {
+        var client = clientRepository.findById(clientId);
+        if (client.isPresent()) {
+            var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (obj.isIndicator()) {
+                var t = takenOrdersRepository.findAllTakenByClientId(clientId);
+                var list = new ArrayList<AbstractOrder>();
+                for(int i=0;i<t.size();i++) {
+                    list.add(orderRepository.findById(t.get(i).getOrderId()).get());
+                }
+                return list;
+                //return takenOrdersRepository.findAllTakenByClientId(clientId).iterator().next().getOrderId();
             }
         }
         return null;
