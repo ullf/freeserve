@@ -8,12 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.SpringSessionSynchronization;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,12 +31,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private ClientRepository clientRepository;
     private final JwtTokenFilter jwtTokenFilter;
-
+    
     public SecurityConfiguration(ClientRepository clientRepository,JwtTokenFilter jwtTokenFilter) {
         this.jwtTokenFilter = jwtTokenFilter;
         this.clientRepository = clientRepository;
@@ -61,7 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/api/login").permitAll().antMatchers("/createClient").permitAll().anyRequest().authenticated();
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Bean
@@ -91,16 +94,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
-    }
-
-    @Bean
-    public ServletListenerRegistrationBean<HttpSessionEventPublisher> HttpSessionEventPublisher() {
-        return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
-    }
-    
+    }  
 }

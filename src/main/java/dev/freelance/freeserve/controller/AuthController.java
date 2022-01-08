@@ -44,7 +44,7 @@ public class AuthController {
             AbstractClient client = (AbstractClient) authentication.getPrincipal();
             String token = Jwts.builder().setIssuer("dev.freelance.freeserve").
                     setSubject(client.getNickname()).setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)).
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000*60*5)).
                     signWith(SignatureAlgorithm.HS512, "ewUgbh93").compact();
             System.out.println(token);
             //StringBuilder builder = new StringBuilder();

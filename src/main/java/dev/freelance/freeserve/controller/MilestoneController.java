@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MilestoneController {
 
     private final MilestoneService milestoneService;
-    //@Autowired
-    @Qualifier("sessionRegistry")
-    private SessionRegistry sessionRegistry;
 
     @GetMapping("/createMilestone/{orderId}/{name}/{description}")
     public void createMilestone(@PathVariable int orderId,@PathVariable String name,@PathVariable String description) {

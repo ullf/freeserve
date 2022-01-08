@@ -1,11 +1,18 @@
 package dev.freelance.freeserve.service;
 
+import dev.freelance.freeserve.entity.AbstractClient;
 import dev.freelance.freeserve.entity.AbstractOrder;
+import dev.freelance.freeserve.entity.TakenOrders;
 import dev.freelance.freeserve.inter.OrderInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
+import dev.freelance.freeserve.repository.TakenOrdersRepository;
 import lombok.AllArgsConstructor;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +24,7 @@ public class AbstractOrderService implements OrderInterface {
 
     private OrderRepository orderRepository;
     private ClientRepository clientRepository;
+    private TakenOrdersRepository takenOrdersRepository;
 
     @Transactional
     public AbstractOrder createOrder(AbstractOrder order) {
@@ -32,9 +40,18 @@ public class AbstractOrderService implements OrderInterface {
     }
 
     public AbstractOrder takeOrder(int id) {
-        var order = orderRepository.findById(id).get();
-        if (order != null) {
-            
+        var order = orderRepository.findById(id);
+        if (order.isPresent()) {
+            var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            System.out.println(obj.isIndicator()+ " "+obj.getNickname());
+            if(obj.isIndicator()) {
+                TakenOrders taken = new TakenOrders();
+                taken.setOrderId(id);
+                taken.setFreelancerId(obj.getId());
+                takenOrdersRepository.save(taken);
+                System.out.println("Size: "+takenOrdersRepository.findAllTakenByOrdersId(id).size());
+                System.out.println("taken!");
+            }
         }
         return null;
     }
