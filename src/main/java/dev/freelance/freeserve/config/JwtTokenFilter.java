@@ -50,45 +50,5 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         } else {
             filterChain.doFilter(request,response);
         }
-       // System.out.println(header);
-       
-       // if(header == null){
-           // SecurityContext sc = SecurityContextHolder.getContext();
-            
-           /* if (SecurityContextHolder.getContext().getAuthentication() == null) {
-               // System.out.println(sc.getAuthentication() == null);
-               System.out.println("NError!!!!");
-               var tmp = request.getSession().getAttribute("Authorization");
-               System.out.println("tmp "+tmp.toString().split(" ")[1]);
-               if (tmp != null) {
-                   request.setAttribute("Authorization", tmp.toString().split(" ")[1]);
-               }
-               filterChain.doFilter(request,response);
-            } else {
-                System.out.println("Error!!!!");
-                filterChain.doFilter(request,response);
-            }*/
-          //  }
-            //System.out.println("filter: "+header);
-            //System.out.println(SecurityContextHolder.getContext());
-            //  var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
-            //l  System.out.println(check.getBody().getSubject());
-            //filterChain.doFilter(request,response);
         }
-        /*if (header != null && header.startsWith("Bearer ")) {
-           System.out.println("header: "+header+" "+request.getHeader(HttpHeaders.HOST));
-            var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
-            System.out.println(check.getBody().getSubject());
-            //log.log(Level.INFO,check.getBody().getSubject());
-            UserDetails user = abstractClientService.loadUserByUsername(check.getBody().getSubject());
-            //log.log(Level.INFO,user.getUsername());
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-                    = new UsernamePasswordAuthenticationToken(user,null,null);
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            filterChain.doFilter(request,response);
-        } else {
-            filterChain.doFilter(request,response);
-        }*/
-
     }
-//}

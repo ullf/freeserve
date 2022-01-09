@@ -20,7 +20,7 @@ public class OrderController {
     @PostMapping("/createOrder")
     public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord, HttpServletRequest request) {
       var order = abstractOrderService.createOrder(ord);
-      if(order.getAbstractName() != null && order.getClientsId().getId() != 0) {
+      if(order.getAbstractName() != null && !order.getClientsId().getNickname().equals(null)) {
           return ResponseEntity.ok(order);
         } else {
             return ResponseEntity.badRequest().body(order);

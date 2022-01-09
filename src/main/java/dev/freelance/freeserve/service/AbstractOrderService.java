@@ -30,16 +30,19 @@ public class AbstractOrderService implements OrderInterface {
     private TakenOrdersRepository takenOrdersRepository;
 
     @Transactional
-    public AbstractOrder createOrder(AbstractOrder order) {
-        if (order.getClientsId() != null) {
-            var client = clientRepository.findById(order.getClientsId().getId()).get();
+    public ResponseEntity<?> createOrder(AbstractOrder order) {
+        if (!order.getClientsId().getNickname().equals(null)) {
+           // var client = clientRepository.findById(order.getClientsId().getId()).get();
+           var client = clientRepository.findAbstractClientByNickname(order.getClientsId().getNickname());
+           var principal = (AbstractClient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             System.out.println(client.getId());
-            if (client.isIndicator() == false ) {
+            if (principal.getNickname().equals(client.getNickname()) && client.isIndicator() == false ) {
+                order.setClientsId(client);
                 orderRepository.save(order);
-                return order;
+                return ResponseEntity.ok(order);
             }
         }
-        return new AbstractOrder();
+        return ResponseEntity.status(404).body("Unknown error,authentication could be needed");
     }
 
     public ResponseEntity<?> takeOrder(int id) {
