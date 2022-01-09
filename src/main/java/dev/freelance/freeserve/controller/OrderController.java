@@ -28,13 +28,13 @@ public class OrderController {
     }
 
     @PostMapping("/takeOrder/{orderId}")
-    public ResponseEntity<AbstractOrder> takeOrder(@PathVariable int orderId) {
-        return ResponseEntity.ok(abstractOrderService.takeOrder(orderId));
+    public ResponseEntity<?> takeOrder(@PathVariable int orderId) {
+        return abstractOrderService.takeOrder(orderId);
     }
 
     @GetMapping("/getTakenOrders/{clientId}")
-    public ResponseEntity<List<AbstractOrder>> getTakenOrders(@PathVariable int clientId) {
-        return ResponseEntity.ok(abstractOrderService.getTakenOrders(clientId));
+    public ResponseEntity<?> getTakenOrders(@PathVariable int clientId) {
+        return abstractOrderService.getTakenOrders(clientId);
     }
 
     @GetMapping("/checkOrder/{orderId}")

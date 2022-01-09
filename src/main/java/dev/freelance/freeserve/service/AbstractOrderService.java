@@ -9,6 +9,8 @@ import dev.freelance.freeserve.repository.OrderRepository;
 import dev.freelance.freeserve.repository.TakenOrdersRepository;
 import lombok.AllArgsConstructor;
 
+import org.hibernate.annotations.Cache;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +42,7 @@ public class AbstractOrderService implements OrderInterface {
         return new AbstractOrder();
     }
 
-    public AbstractOrder takeOrder(int id) {
+    public ResponseEntity<?> takeOrder(int id) {
         var order = orderRepository.findById(id);
         if (order.isPresent()) {
             var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -53,24 +55,25 @@ public class AbstractOrderService implements OrderInterface {
                 System.out.println("taken!");
             }
         }
-        return null;
+        return ResponseEntity.status(404).body("No order found with such order id");
     }
 
-    public List<AbstractOrder> getTakenOrders(int clientId) {
+    public ResponseEntity<?> getTakenOrders(int clientId) {
         var client = clientRepository.findById(clientId);
         if (client.isPresent()) {
+            System.out.println("OK");
             var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (obj.isIndicator()) {
+                System.out.println("OK");
                 var t = takenOrdersRepository.findAllTakenByClientId(clientId);
                 var list = new ArrayList<AbstractOrder>();
                 for(int i=0;i<t.size();i++) {
                     list.add(orderRepository.findById(t.get(i).getOrderId()).get());
                 }
-                return list;
-                //return takenOrdersRepository.findAllTakenByClientId(clientId).iterator().next().getOrderId();
+                return ResponseEntity.ok(list);
             }
         }
-        return null;
+        return ResponseEntity.status(404).body("No orders");
     }
 
     @Transactional

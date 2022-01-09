@@ -39,7 +39,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             System.out.println("HEADER!!");
             System.out.println(SecurityContextHolder.getContext());
             var check = Jwts.parser().setSigningKey("ewUgbh93").parseClaimsJws(header.split(" ")[1].trim());
-            System.out.println(check.getBody().getSubject());
+            System.out.println("Subject " +check.getBody());
             //log.log(Level.INFO,check.getBody().getSubject());
             UserDetails user = abstractClientService.loadUserByUsername(check.getBody().getSubject());
             //log.log(Level.INFO,user.getUsername());
