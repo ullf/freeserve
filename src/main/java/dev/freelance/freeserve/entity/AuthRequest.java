@@ -1,5 +1,8 @@
 package dev.freelance.freeserve.entity;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class AuthRequest {
     private String nickname;
     private String password;

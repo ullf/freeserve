@@ -30,7 +30,7 @@ public class AbstractOrderService implements OrderInterface {
     private TakenOrdersRepository takenOrdersRepository;
 
     @Transactional
-    public ResponseEntity<?> createOrder(AbstractOrder order) {
+    public AbstractOrder createOrder(AbstractOrder order) {
         if (!order.getClientsId().getNickname().equals(null)) {
            // var client = clientRepository.findById(order.getClientsId().getId()).get();
            var client = clientRepository.findAbstractClientByNickname(order.getClientsId().getNickname());
@@ -39,13 +39,13 @@ public class AbstractOrderService implements OrderInterface {
             if (principal.getNickname().equals(client.getNickname()) && client.isIndicator() == false ) {
                 order.setClientsId(client);
                 orderRepository.save(order);
-                return ResponseEntity.ok(order);
+                return order;
             }
         }
-        return ResponseEntity.status(404).body("Unknown error,authentication could be needed");
+        return null;
     }
 
-    public ResponseEntity<?> takeOrder(int id) {
+    public TakenOrders takeOrder(int id) {
         var order = orderRepository.findById(id);
         if (order.isPresent()) {
             var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -55,13 +55,13 @@ public class AbstractOrderService implements OrderInterface {
                 taken.setOrderId(id);
                 taken.setFreelancerId(obj.getId());
                 takenOrdersRepository.save(taken);
-                System.out.println("taken!");
+                return taken;
             }
         }
-        return ResponseEntity.status(404).body("No order found with such order id");
+        return null;
     }
 
-    public ResponseEntity<?> getTakenOrders(int clientId) {
+    public List<AbstractOrder> getTakenOrders(int clientId) {
         var client = clientRepository.findById(clientId);
         if (client.isPresent()) {
             System.out.println("OK");
@@ -73,10 +73,10 @@ public class AbstractOrderService implements OrderInterface {
                 for(int i=0;i<t.size();i++) {
                     list.add(orderRepository.findById(t.get(i).getOrderId()).get());
                 }
-                return ResponseEntity.ok(list);
+                return list;
             }
         }
-        return ResponseEntity.status(404).body("No orders");
+        return null;
     }
 
     @Transactional
