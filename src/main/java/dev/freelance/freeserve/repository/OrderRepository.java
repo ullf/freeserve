@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface OrderRepository extends CrudRepository<AbstractOrder,Integer> {
 
     public AbstractOrder findByabstractName(String abstractName);
-    @Query("select a from AbstractOrder a where a.clientsId.id = :id")
+    @Query("select order from AbstractOrder order where order.clientsId.id = :id")
     public List<AbstractOrder> findAllOrdersById(@Param("id") int id);
 }

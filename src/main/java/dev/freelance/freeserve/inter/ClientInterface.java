@@ -7,6 +7,4 @@ public interface ClientInterface {
     boolean isBuyer();
     AbstractClient createAbstractClient(String name,String surname,boolean indicator);
     AbstractClient findAbstractClientByNickname(String nickname);
-
-   // AbstractClient createClientOrder(int clientId,String orderName);
 }

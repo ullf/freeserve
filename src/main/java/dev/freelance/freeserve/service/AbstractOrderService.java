@@ -1,11 +1,16 @@
 package dev.freelance.freeserve.service;
 
+import dev.freelance.freeserve.entity.AbstractClient;
 import dev.freelance.freeserve.entity.AbstractOrder;
+import dev.freelance.freeserve.entity.TakenOrders;
 import dev.freelance.freeserve.inter.OrderInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
+import dev.freelance.freeserve.repository.TakenOrdersRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,29 +22,52 @@ public class AbstractOrderService implements OrderInterface {
 
     private OrderRepository orderRepository;
     private ClientRepository clientRepository;
+    private TakenOrdersRepository takenOrdersRepository;
 
-    @Transactional
     public AbstractOrder createOrder(AbstractOrder order) {
-        if (order.getClientsId() != null) {
-            var client = clientRepository.findById(order.getClientsId().getId()).get();
-            System.out.println(client.getId());
-            if (client.isIndicator() == false ) {
+        if (!order.getClientsId().getNickname().equals(null)) {
+           var client = clientRepository.findAbstractClientByNickname(order.getClientsId().getNickname());
+           var principal = (AbstractClient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal.getNickname().equals(client.getNickname()) && client.isIndicator() == false ) {
+                order.setClientsId(client);
                 orderRepository.save(order);
                 return order;
             }
         }
-        return new AbstractOrder();
+        return null;
     }
 
-    public AbstractOrder takeOrder(int id) {
-        var order = orderRepository.findById(id).get();
-        if (order != null) {
-            
+    public TakenOrders takeOrder(int id) {
+        var order = orderRepository.findById(id);
+        if (order.isPresent()) {
+            var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if(obj.isIndicator()) {
+                TakenOrders taken = new TakenOrders();
+                taken.setOrderId(id);
+                taken.setFreelancerId(obj.getId());
+                takenOrdersRepository.save(taken);
+                return taken;
+            }
         }
         return null;
     }
 
-    @Transactional
+    public List<AbstractOrder> getTakenOrders(int clientId) {
+        var client = clientRepository.findById(clientId);
+        if (client.isPresent()) {
+            var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (obj.isIndicator()) {
+                var taken = takenOrdersRepository.findAllTakenByClientId(clientId);
+                var list = new ArrayList<AbstractOrder>();
+                for(int i=0;i<taken.size();i++) {
+                    list.add(orderRepository.findById(taken.get(i).getOrderId()).get());
+                }
+                return list;
+            }
+        }
+        return null;
+    }
+
     @Override
     public AbstractOrder createOrder(int clientId,String name,String description) {
         var client = clientRepository.findById(clientId).get();
@@ -77,7 +105,6 @@ public class AbstractOrderService implements OrderInterface {
     @Override
     public List<AbstractOrder> getAllOrdersById(int clientId) {
         var list = orderRepository.findAllOrdersById(clientId);
-        System.out.println(list.size());
         return list;
     }
 }

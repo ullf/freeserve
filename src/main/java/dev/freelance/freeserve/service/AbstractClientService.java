@@ -5,9 +5,7 @@ import dev.freelance.freeserve.entity.BuyerClient;
 import dev.freelance.freeserve.inter.ClientInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import lombok.AllArgsConstructor;
-
-import java.util.Optional;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,14 +26,14 @@ public class AbstractClientService implements ClientInterface {
         return false;
     }
 
-    public AbstractClient createAbstractClient(AbstractClient abstractClient) {
+    public ResponseEntity<?> createAbstractClient(AbstractClient abstractClient) {
         if (abstractClient.isIndicator() == false) {
             clientRepository.save(abstractClient);
-            return abstractClient;
+            return ResponseEntity.ok(abstractClient);
         } else {
             abstractClient.setNickname("frl_"+abstractClient.getNickname());
             clientRepository.save(abstractClient);
-            return abstractClient;
+            return ResponseEntity.ok(abstractClient);
         }
     }
 

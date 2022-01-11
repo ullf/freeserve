@@ -18,12 +18,32 @@ public class OrderController {
     private final AbstractOrderService abstractOrderService;
 
     @PostMapping("/createOrder")
-    public ResponseEntity<AbstractOrder> createOrder(@RequestBody AbstractOrder ord, HttpServletRequest request) {
+    public ResponseEntity<?> createOrder(@RequestBody AbstractOrder ord, HttpServletRequest request) {
       var order = abstractOrderService.createOrder(ord);
-      if(order.getAbstractName() != null && order.getClientsId().getId() != 0) {
+      if(order.getAbstractName() != null && !order.getClientsId().getNickname().equals(null)) {
           return ResponseEntity.ok(order);
         } else {
-            return ResponseEntity.badRequest().body(order);
+            return ResponseEntity.badRequest().body("Unknown error,authentication could be needed");
+        }
+    }
+
+    @PostMapping("/takeOrder/{orderId}")
+    public ResponseEntity<?> takeOrder(@PathVariable int orderId) {
+        var order = abstractOrderService.takeOrder(orderId);
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.status(404).body("No order found with such order id");
+        }
+    }
+
+    @GetMapping("/getTakenOrders/{clientId}")
+    public ResponseEntity<List<?>> getTakenOrders(@PathVariable int clientId) {
+        var orders = abstractOrderService.getTakenOrders(clientId);
+        if (orders.size() != 0) {
+            return ResponseEntity.ok(orders);
+        } else {
+            return ResponseEntity.status(404).body(orders);
         }
     }
 

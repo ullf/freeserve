@@ -4,9 +4,7 @@ import dev.freelance.freeserve.entity.Milestone;
 import dev.freelance.freeserve.inter.MilestoneInterface;
 import dev.freelance.freeserve.repository.MilestoneRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +46,6 @@ public class MilestoneService implements MilestoneInterface {
     @Override
     public List<Milestone> getAllMilestonesByOrderId(int orderId) {
         var list = milestoneRepository.findAllMilestonesByOrderId(orderId);
-        System.out.println(list.size());
         return list;
     }
 
