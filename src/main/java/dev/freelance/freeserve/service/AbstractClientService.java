@@ -5,9 +5,6 @@ import dev.freelance.freeserve.entity.BuyerClient;
 import dev.freelance.freeserve.inter.ClientInterface;
 import dev.freelance.freeserve.repository.ClientRepository;
 import lombok.AllArgsConstructor;
-
-import java.util.Optional;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

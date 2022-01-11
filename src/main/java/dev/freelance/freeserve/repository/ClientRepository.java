@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClientRepository extends CrudRepository<AbstractClient,Integer> {
 
-    @Query("select a from AbstractClient a where a.nickname = :nickname")
+    @Query("select client from AbstractClient client where client.nickname = :nickname")
     AbstractClient findAbstractClientByNickname(@Param("nickname") String nickname);
 
-    @Query("select a from AbstractClient a where a.nickname = :nickname")
-    UserDetails loadUserByUsername( @Param("nickname") String nickname)
+    @Query("select client from AbstractClient client where client.nickname = :nickname")
+    UserDetails loadUserByUsername(@Param("nickname") String nickname)
             throws UsernameNotFoundException;
 }

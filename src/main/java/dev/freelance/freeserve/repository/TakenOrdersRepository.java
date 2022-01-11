@@ -12,7 +12,7 @@ import dev.freelance.freeserve.entity.TakenOrders;
 @Repository
 public interface TakenOrdersRepository extends CrudRepository<TakenOrders,Integer> {
 
-    @Query("select a from TakenOrders a where a.freelancerId = :id")
+    @Query("select order from TakenOrders order where order.freelancerId = :id")
     public List<TakenOrders> findAllTakenByClientId(@Param("id") int id);
     
 }

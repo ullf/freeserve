@@ -8,13 +8,8 @@ import dev.freelance.freeserve.repository.ClientRepository;
 import dev.freelance.freeserve.repository.OrderRepository;
 import dev.freelance.freeserve.repository.TakenOrdersRepository;
 import lombok.AllArgsConstructor;
-
-import org.hibernate.annotations.Cache;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,13 +24,10 @@ public class AbstractOrderService implements OrderInterface {
     private ClientRepository clientRepository;
     private TakenOrdersRepository takenOrdersRepository;
 
-    @Transactional
     public AbstractOrder createOrder(AbstractOrder order) {
         if (!order.getClientsId().getNickname().equals(null)) {
-           // var client = clientRepository.findById(order.getClientsId().getId()).get();
            var client = clientRepository.findAbstractClientByNickname(order.getClientsId().getNickname());
            var principal = (AbstractClient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            System.out.println(client.getId());
             if (principal.getNickname().equals(client.getNickname()) && client.isIndicator() == false ) {
                 order.setClientsId(client);
                 orderRepository.save(order);
@@ -49,7 +41,6 @@ public class AbstractOrderService implements OrderInterface {
         var order = orderRepository.findById(id);
         if (order.isPresent()) {
             var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            System.out.println(obj.isIndicator()+ " "+obj.getNickname());
             if(obj.isIndicator()) {
                 TakenOrders taken = new TakenOrders();
                 taken.setOrderId(id);
@@ -64,14 +55,12 @@ public class AbstractOrderService implements OrderInterface {
     public List<AbstractOrder> getTakenOrders(int clientId) {
         var client = clientRepository.findById(clientId);
         if (client.isPresent()) {
-            System.out.println("OK");
             var obj = (AbstractClient)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (obj.isIndicator()) {
-                System.out.println("OK");
-                var t = takenOrdersRepository.findAllTakenByClientId(clientId);
+                var taken = takenOrdersRepository.findAllTakenByClientId(clientId);
                 var list = new ArrayList<AbstractOrder>();
-                for(int i=0;i<t.size();i++) {
-                    list.add(orderRepository.findById(t.get(i).getOrderId()).get());
+                for(int i=0;i<taken.size();i++) {
+                    list.add(orderRepository.findById(taken.get(i).getOrderId()).get());
                 }
                 return list;
             }
@@ -79,7 +68,6 @@ public class AbstractOrderService implements OrderInterface {
         return null;
     }
 
-    @Transactional
     @Override
     public AbstractOrder createOrder(int clientId,String name,String description) {
         var client = clientRepository.findById(clientId).get();
@@ -117,7 +105,6 @@ public class AbstractOrderService implements OrderInterface {
     @Override
     public List<AbstractOrder> getAllOrdersById(int clientId) {
         var list = orderRepository.findAllOrdersById(clientId);
-        System.out.println(list.size());
         return list;
     }
 }

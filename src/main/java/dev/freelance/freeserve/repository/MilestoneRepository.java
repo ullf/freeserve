@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MilestoneRepository extends CrudRepository<Milestone,Integer> {
 
-    @Query("select a from Milestone a where a.orderId.abstractId = :id")
+    @Query("select milestone from Milestone milestone where milestone.orderId.abstractId = :id")
     public List<Milestone> findAllMilestonesByOrderId(@Param("id") int id);
 }

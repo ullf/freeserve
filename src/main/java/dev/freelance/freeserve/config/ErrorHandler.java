@@ -38,7 +38,6 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         String error = "Error!";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, error));
     }
@@ -46,7 +45,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
+    
         String error = "Error!";
         return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, error));
     }
